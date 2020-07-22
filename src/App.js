@@ -1,8 +1,9 @@
 import React,{useState ,useEffect} from 'react';
 
 import './App.css';
-import { FormControl,Select ,MenuItem  } from '@material-ui/core';
+import { FormControl,Select ,MenuItem ,Card ,CardContent} from '@material-ui/core';
 import InfoBox from './components/InfoBox';
+import Map from './components/Map';
 function App() {
   
   const [countries, setCountries] = useState([
@@ -31,23 +32,37 @@ function App() {
   };
   return (
     <div className="app">
-      <div className="app_header">
-        <h1>COVID-19 Tracker</h1>
-        <FormControl className="app_dropdown">
-          <Select variant="outlined" value={country} onChange={onCountryChange}>
-          <MenuItem value="worldwide">WorldWide</MenuItem>
-            {countries.map((country) => (
-              <MenuItem value={country.value}>{country.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <div className="app_left">
+        <div className="app_header">
+          <h1>COVID-19 Tracker</h1>
+          <FormControl className="app_dropdown">
+            <Select
+              variant="outlined"
+              value={country}
+              onChange={onCountryChange}
+            >
+              <MenuItem value="worldwide">WorldWide</MenuItem>
+              {countries.map((country) => (
+                <MenuItem value={country.value}>{country.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className="app_stats">
+          <InfoBox title="COVID-19 Cases" cases={123} total={456} />
+          <InfoBox title="Recoverd" cases={123} total={456} />
+          <InfoBox title="Deaths" cases={123} total={456} />
+        </div>
+
+        <Map />
       </div>
 
-      <div className="app_stats">
-        <InfoBox title="COVID-19 Cases" cases={123} total={456}/>
-        <InfoBox title="Recoverd" cases={123} total={456}/>
-        <InfoBox title="Deaths" cases={123} total={456}/>
-      </div>
+      <Card className="app_right">
+        <CardContent>
+          
+        </CardContent>
+      </Card>
     </div>
   );
 }
