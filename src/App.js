@@ -60,7 +60,8 @@ function App() {
 
       <Card className="app_right">
         <CardContent>
-          
+          <h1>Live Cases by country</h1>
+          <h1>Live Cases GRAPH</h1>
         </CardContent>
       </Card>
     </div>
