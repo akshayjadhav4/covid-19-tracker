@@ -4,6 +4,8 @@ import './App.css';
 import { FormControl,Select ,MenuItem ,Card ,CardContent} from '@material-ui/core';
 import InfoBox from './components/InfoBox';
 import Map from './components/Map';
+import Table from './components/Table';
+import { sortData } from './util';
 function App() {
   
   const [countries, setCountries] = useState([
@@ -11,6 +13,7 @@ function App() {
   ])
   const [country, setCountry] = useState('worldwide')
   const [countryInfo, setCountryInfo] = useState({})
+  const [tableData, setTableData] = useState([])
   useEffect(() => {
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
@@ -21,6 +24,8 @@ function App() {
             value: country.countryInfo.iso2,
           }));
           setCountries(countries)
+          const sortedData = sortData(data)
+          setTableData(sortedData)
         });
     };
 
@@ -32,7 +37,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setCountryInfo(data);
-        console.log(data);
+        // console.log(data);
       });
   }, []);
   const onCountryChange = async (event) => {
@@ -79,7 +84,8 @@ function App() {
 
       <Card className="app_right">
         <CardContent>
-          <h1>Live Cases by country</h1>
+          <h1>Live Cases By Country</h1>
+          <Table countries={tableData}/>
           <h1>Live Cases GRAPH</h1>
         </CardContent>
       </Card>
