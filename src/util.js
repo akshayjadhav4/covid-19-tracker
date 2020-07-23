@@ -75,3 +75,4 @@ export const showDataOnMap = (data, casesType = "cases") =>
   ));
 
 
+export const styleStat = (stat) => stat ?  `+${numeral(stat).format('0.0a')}` : null
