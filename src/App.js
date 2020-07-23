@@ -7,6 +7,7 @@ import Map from './components/Map';
 import Table from './components/Table';
 import { sortData } from './util';
 import LineGraph from './components/LineGraph';
+import "leaflet/dist/leaflet.css"
 function App() {
   
   const [countries, setCountries] = useState([
@@ -15,6 +16,9 @@ function App() {
   const [country, setCountry] = useState('worldwide')
   const [countryInfo, setCountryInfo] = useState({})
   const [tableData, setTableData] = useState([])
+  const [mapCenter, setMapCenter] = useState({lat : 34.80746 , lng : -40.4796})
+  const [mapZoom, setMapZoom] = useState(3)
+  const [mapCountries, setmapCountries] = useState([])
   useEffect(() => {
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
@@ -27,6 +31,7 @@ function App() {
           setCountries(countries)
           const sortedData = sortData(data)
           setTableData(sortedData)
+          setmapCountries(data)
         });
     };
 
@@ -53,6 +58,13 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
+        if (countryCode === "worldwide") {
+          setMapCenter({ lat: 34.80746, lng: -40.4796 });
+          setMapZoom(3);
+        } else {
+          setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+          setMapZoom(4);
+        }
       });
   };
   return (
@@ -76,11 +88,11 @@ function App() {
 
         <div className="app_stats">
           <InfoBox title="COVID-19 Cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
-          <InfoBox title="Recoverd" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
+          <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
           <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
 
-        <Map />
+        <Map countries={mapCountries} center={mapCenter} zoom={mapZoom}  />
       </div>
 
       <Card className="app_right">
